@@ -1,5 +1,11 @@
 "use strict";
-const mail = () => {
+const onOpen = () => {
+    const ui = SpreadsheetApp.getUi();
+    ui.createMenu('メニュー')
+        .addItem('課金履歴取得', 'getBillingHistory')
+        .addToUi();
+};
+const getBillingHistory = () => {
     const ss = SpreadsheetApp.getActiveSpreadsheet();
     const sh = ss.getActiveSheet();
     const googlePlay = getGooglePlayBillingDetails();
