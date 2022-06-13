@@ -3,12 +3,25 @@ const mail = () => {
   const sh = ss.getActiveSheet();
   const googlePlay = getGooglePlayBillingDetails();
   const apple = getAppleBillingDetails();
-
-  // シートへの書き込み用の変数
-  const values = googlePlay.concat(apple);
-  values.sort((a, b) => {
-    return a[0] < b[0] ? 1 : -1;
+  const details = googlePlay.concat(apple);
+  details.sort((a, b) => {
+    return a.date < b.date ? 1 : -1;
   });
+
+  // シート書き込み用の変数
+  const values = [];
+  for (const detail of details) {
+    const value = [
+      detail.date,
+      detail.title,
+      detail.item,
+      detail.price,
+      detail.from,
+      detail.subject,
+      detail.permalink,
+    ];
+    values.push(value);
+  }
   if (values.length > 0) {
     sh.getRange(2, 1, values.length, values[0].length).setValues(values);
   }
@@ -29,21 +42,29 @@ const getGooglePlayBillingDetails = () => {
 
     const contents = body.split(/(\r\n|\n|\r)/);
     const receipt = contents.filter((content) => content.includes('￥'));
-    const detail = receipt[0];
-    const billingItem = detail.match(/^.* \(.*\)\s*\uFFE5.*\d+$/);
-    if (billingItem === null) {
-      continue;
+    for (const detail of receipt) {
+      const billingItem = detail.match(/^.* \(.*\)\s*\uFFE5.*\d+$/);
+      if (billingItem === null) {
+        continue;
+      }
+      const itemCharEnd = detail.indexOf('(');
+      const item = detail.substring(0, itemCharEnd).trim();
+      const appTitleStart = itemCharEnd + 1;
+      const appTitleEnd = detail.indexOf(')');
+      const appTitle = detail.substring(appTitleStart, appTitleEnd).trim();
+      const priceStart = detail.indexOf('￥') + 1;
+      const price = detail.substring(priceStart).trim();
+
+      values.push({
+        date: date,
+        title: appTitle,
+        item: item,
+        price: price,
+        from: from,
+        subject: subject,
+        permalink: perma,
+      });
     }
-
-    const itemCharEnd = detail.indexOf('(');
-    const item = detail.substring(0, itemCharEnd).trim();
-    const appTitleStart = itemCharEnd + 1;
-    const appTitleEnd = detail.indexOf(')');
-    const appTitle = detail.substring(appTitleStart, appTitleEnd).trim();
-    const priceStart = detail.indexOf('￥') + 1;
-    const price = detail.substring(priceStart).trim();
-
-    values.push([date, appTitle, item, price, from, subject, perma]);
   }
   return values;
 };
@@ -76,7 +97,15 @@ const getAppleBillingDetails = () => {
       const priceStart = detail.indexOf('¥') + 1;
       const price = detail.substring(priceStart).trim();
 
-      values.push([date, appTitle, item, price, from, subject, perma]);
+      values.push({
+        date: date,
+        title: appTitle,
+        item: item,
+        price: price,
+        from: from,
+        subject: subject,
+        permalink: perma,
+      });
     }
   }
   return values;
