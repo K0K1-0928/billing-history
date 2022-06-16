@@ -1,6 +1,6 @@
 # Billing History
 
-G Mail から Apple/Google の課金明細メールを取得し、あなたの課金履歴をリスト化するプログラムです。  
+Gmail から Apple/Google の課金明細メールを取得し、あなたの課金履歴をリスト化するプログラムです。  
 コンテナバインド型の Google Apps Script ですので、  
 以下のリンクからスプレッドシートをコピーして使用するのが簡単です。  
 [Billing History](https://docs.google.com/spreadsheets/d/1iZx57lF7GugtRb6TjqZXRP2PJpJLe0vSR0fm4YdN_VY/edit?usp=sharing)
@@ -14,8 +14,9 @@ G Mail から Apple/Google の課金明細メールを取得し、あなたの�
 1. [Billing History](https://docs.google.com/spreadsheets/d/1iZx57lF7GugtRb6TjqZXRP2PJpJLe0vSR0fm4YdN_VY/edit?usp=sharing)を開き、 ファイル > コピーを作成 でスプレッドシートをコピーします。
 2. スプレッドシートを開くと、数十秒ほどでヘルプボタンの隣にメニューボタンが作成されます。
 3. スプレッドシートのメニューボタンから、「課金履歴取得」ボタンをクリックし、実行します。
-4. G Mail への編集・閲覧権限を要求されるので、許可します。
-5. 実行完了後、メールから取得したデータがスプレッドシートに書き込まれます。
+4. Gmail への編集・閲覧権限を要求されるので、許可します。
+5. 再度、スプレッドシートのメニューボタンから、「課金履歴取得」ボタンをクリックし、実行します。
+6. 実行完了後、メールから取得したデータがスプレッドシートに書き込まれます。
 
 ### 2 回目以降
 
